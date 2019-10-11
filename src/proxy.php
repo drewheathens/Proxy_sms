@@ -63,8 +63,6 @@ if (isset($_GET['SOURCEADDR']) and isset($_GET['DESTADDR']) and isset($_GET['MES
         
         foreach ($strToArray as $key) { //loop through strToArray of strings 
                     $encoded = rawurlencode($key);
-                    echo $key;
-                    echo "\n";
                     $smsUrl = $emgUrl . "&SOURCEADDR=" . $SOURCEADDR . "&DESTADDR=" . $DESTADDR . "&MESSAGE=" . $encoded . "&DLR=" . $DLR . "&USERNAME=" . $smsuser . "&PASSWORD=" . $smspassword;
                     $smsResults = join('', file($smsUrl));
                                     
