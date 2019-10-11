@@ -84,7 +84,7 @@ if (isset($_GET['SOURCEADDR']) and isset($_GET['DESTADDR']) and isset($_GET['MES
             }
         }
     } elseif (strlen($w) > 640) {
-        echo "Send failed! Message too large.";
+        echo "0\n0\nNULL";
     } else {
 
         $smsUrl = $emgUrl . "&SOURCEADDR=" . $SOURCEADDR . "&DESTADDR=" . $DESTADDR . "&MESSAGE=" . $MESSAGE . "&DLR=" . $DLR . "&USERNAME=" . $smsuser . "&PASSWORD=" . $smspassword;

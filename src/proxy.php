@@ -17,6 +17,7 @@ if (isset($_GET['SOURCEADDR']) and isset($_GET['DESTADDR']) and isset($_GET['MES
     $MESSAGEID = 0;
     $smsuser = "smsuser";
     $smspassword = "smspass";
+    $smsResults = "0\n0\nNULL";
 
     if (isset($_GET['MESSAGEID'])) {
         $MESSAGEID = rawurlencode($_GET['MESSAGEID']);
@@ -53,30 +54,22 @@ if (isset($_GET['SOURCEADDR']) and isset($_GET['DESTADDR']) and isset($_GET['MES
 
     if (isset($_GET['SOURCEPORT']) and isset($_GET['DESTPORT']))
         $ports = "&SOURCEPORT=" . $_GET['SOURCEPORT'] . "&DESTPORT=" . $_GET['DESTPORT'];
-    ### evans
-    $w = urldecode($MESSAGE); // remove special Characters
     
-    if (strlen($w) > 160 && strlen($w) < 640) {        
+    $w = rawurldecode($MESSAGE); // remove special Characters  
+    if (strlen($w) < 640) {        
         $end = 157;
-        $strToArray = explode("\n", wordwrap($w, $end)); 
+        $strToArray = explode("\n", wordwrap($w, $end)); // 
+
         
-        foreach ($strToArray as $key) { //loop through array of strings
-                    $encoded = urlencode($key);
+        foreach ($strToArray as $key) { //loop through strToArray of strings 
+                    $encoded = rawurlencode($key);
+                    echo $key;
+                    echo "\n";
                     $smsUrl = $emgUrl . "&SOURCEADDR=" . $SOURCEADDR . "&DESTADDR=" . $DESTADDR . "&MESSAGE=" . $encoded . "&DLR=" . $DLR . "&USERNAME=" . $smsuser . "&PASSWORD=" . $smspassword;
                     $smsResults = join('', file($smsUrl));
-                    echo $smsUrl;
-                    echo "\n";                
+                                    
                }        
-    } elseif (strlen($w) > 640) {
-        echo "Send failed! Message too large.";
-    } else {
-        $smsUrl = $emgUrl . "&SOURCEADDR=" . $SOURCEADDR . "&DESTADDR=" . $DESTADDR . "&MESSAGE=" . $MESSAGE . "&DLR=" . $DLR . "&USERNAME=" . $smsuser . "&PASSWORD=" . $smspassword;// append the encoded sttrings from array
-    }
-    ##evans##
-
-
-
-    $smsResults = join('', file($smsUrl));
+    }    
 
     echo trim("$smsResults");
 } else {
